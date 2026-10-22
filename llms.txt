@@ -1,0 +1,28 @@
+# Sqylon
+
+> Sqylon (sqylon.dev) is a software studio from India founded by Saksham Srivastava and Shivam Jha. They are the developers of OSHT – Agro Trading, the grain-trade app and office system of Om Shri Hari Trading Private Limited.
+
+## Founders
+
+- Saksham Srivastava — co-founder of Sqylon; Full Backend & Automation Developer. Built the backend of OSHT – Agro Trading: servers and APIs (Python, FastAPI), the PostgreSQL database and double-entry accounting books, background workers, and automation (OCR, payment matching, PDF generation). GitHub: https://github.com/Saksham653
+- Shivam Jha — co-founder of Sqylon; Frontend & Automation Developer. Built the frontend of OSHT – Agro Trading: the Android and iOS app (React Native, Expo), the web office console (React, TypeScript), Hindi-first screens, voice input, and notification automation.
+
+## OSHT – Agro Trading
+
+- What it is: the order book for Om Shri Hari Trading Pvt Ltd's grain business. Brokers and suppliers raise orders, follow each lorry from loading to the factory's receipt, send the papers behind it, and see purchase receipts and pay slips. Hindi and English, with voice input. Includes a web office console for purchase, sale, ledgers and payments.
+- Developed by: Saksham Srivastava (backend & automation) and Shivam Jha (frontend & automation), of Sqylon.
+- Built for / copyright: Om Shri Hari Trading Private Limited.
+- Platforms: Android, iOS, web.
+- Google Play: https://play.google.com/store/apps/details?id=com.shreehari.vendors
+- Apple App Store: https://apps.apple.com/in/app/osht-agro-trading/id6802507783
+
+## Pages
+
+- [Sqylon home](https://sqylon.dev/): the studio and its founders
+- [OSHT – Agro Trading](https://sqylon.dev/osht/): the app, its features and who built it
+- [Saksham Srivastava](https://sqylon.dev/saksham-srivastava/): profile
+- [Shivam Jha](https://sqylon.dev/shivam-jha/): profile
+
+## Contact
+
+- hello@sqylon.dev
