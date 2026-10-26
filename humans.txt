@@ -1,0 +1,10 @@
+/* TEAM */
+Saksham Srivastava — Co-founder, Full Backend & Automation Developer
+Shivam Jha — Co-founder, Frontend & Automation Developer
+
+/* STUDIO */
+Sqylon — https://sqylon.dev
+Developers of OSHT – Agro Trading for Om Shri Hari Trading Private Limited
+
+/* SITE */
+Plain HTML and CSS, no tracking.

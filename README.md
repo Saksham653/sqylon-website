@@ -1,40 +1,40 @@
-# Sqaron Technologies — website
+# Sqylon — website
 
-The website of **Sqaron Technologies Pvt Ltd**, the product studio of **Shivam Jha** and **Saksham Srivastava**: websites, mobile apps, SaaS and AI agents, designed and built end to end. Live at https://sqylon.dev.
+The website of **Sqylon**, the software studio of **Saksham Srivastava** and **Shivam Jha**, developers of **OSHT – Agro Trading**.
 
-## Stack
+| Founder | Role |
+|---|---|
+| **Saksham Srivastava** ([@Saksham653](https://github.com/Saksham653)) | Co-founder · Full Backend & Automation Developer |
+| **Shivam Jha** | Co-founder · Frontend & Automation Developer |
 
-- **Next.js 16** (App Router, JavaScript) with `output: 'export'`: every page is prerendered to static HTML in `out/`.
-- **React 19**, **Motion** (`motion/react`, formerly Framer Motion) for springs and entrances, **GSAP** + ScrollTrigger (`@gsap/react`) for pinned and scrubbed scroll scenes, **Lenis** for smooth scrolling.
-- **WebGL**: the liquid founder portrait, the chrome blob and the founder characters (raw WebGL2 in `lib/engines/`), and the work reel (**FlexCarousel** from React Bits on **ogl**, in `components/FlexCarousel/`).
-- Fonts are self-hosted in `app/fonts/` (Geist, Geist Mono, Instrument Serif).
+## OSHT – Agro Trading
 
-## Run it
+The order book and office system for Om Shri Hari Trading Pvt Ltd's grain business: brokers and suppliers raise orders, follow each lorry from loading to delivery, and keep every paper and payment in one place, in Hindi and English.
+
+- Backend & automation: Saksham Srivastava
+- Frontend & automation: Shivam Jha
+- Google Play: https://play.google.com/store/apps/details?id=com.shreehari.vendors
+- App Store: https://apps.apple.com/in/app/osht-agro-trading/id6802507783
+
+OSHT – Agro Trading © Om Shri Hari Trading Private Limited.
+
+## The site
+
+Plain HTML and CSS, no build step and no tracking.
+
+| Path | Page |
+|---|---|
+| `/` | Sqylon home: founders, OSHT, what we build |
+| `/osht/` | OSHT – Agro Trading: features and who built it |
+| `/saksham-srivastava/` | Saksham Srivastava's profile |
+| `/shivam-jha/` | Shivam Jha's profile |
+| `/llms.txt` | Plain-text summary for AI assistants |
+| `/robots.txt`, `/sitemap.xml` | Search engines and AI crawlers welcome |
+
+To preview locally:
 
 ```bash
-npm install
-npm run dev        # http://localhost:3000
-npm run build      # static site in out/
-npm run preview    # serve out/ on http://localhost:4173
+python -m http.server 5211
 ```
 
-## Where things are
-
-| Path | What |
-|---|---|
-| `app/page.js` | Home page (metadata + JSON-LD), renders `components/Site.jsx` |
-| `app/osht/`, `app/shivam-jha/`, `app/saksham-srivastava/` | Inner pages |
-| `components/Works.jsx` | Selected work: the WORK fly-through, the scroll-driven reel, the story panel |
-| `components/SiteBrowser.jsx` | The in-page macOS-style browser that opens a project's live site |
-| `lib/projects.js` | The ten projects: copy, credits, links, screenshots, whether they can be framed |
-| `components/shivam/` | Shivam's portfolio (`/shivam-jha/`): his 3D character (`HeadTracker.jsx`, WebGL2 rig in `headRig.js`), the sections, and `portfolio.css`; data in `lib/shivam.js` |
-| `components/saksham/` | Saksham's portfolio (`/saksham-srivastava/`); data in `lib/saksham.js` |
-| `components/rb/`, `components/ui21/` | Ready-made components: React Bits (one folder each, with its CSS) and 21st.dev ports (Aceternity, Magic UI) |
-| `lib/site.js` | Brand, copy and lists used across the page |
-| `public/__forms.html` | Registers the `brief` form with Netlify Forms |
-
-## Deploy (Netlify)
-
-`netlify.toml` runs `npm run build` and publishes `out/`. The contact form posts to `/__forms.html`, which Netlify detects at deploy time.
-
-To let Clonix and LUMIQ open inside the in-page browser, allow this site to frame them: replace `X-Frame-Options: DENY` / `frame-ancestors 'none'` with `Content-Security-Policy: frame-ancestors 'self' https://sqylon.dev`. Until then they open a preview with a button to the live site.
+Then open http://localhost:5211.
