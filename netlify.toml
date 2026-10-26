@@ -1,6 +1,10 @@
-# Plain static site: the folder itself is published, nothing to build.
+# Next.js static export: `npm run build` writes the whole site to out/, which Netlify publishes.
 [build]
-  publish = "."
+  command = "npm run build"
+  publish = "out"
+
+[build.environment]
+  NODE_VERSION = "22"
 
 [[headers]]
   for = "/*"
@@ -12,6 +16,11 @@
   for = "/llms.txt"
   [headers.values]
     Content-Type = "text/plain; charset=utf-8"
+
+[[headers]]
+  for = "/_next/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
 
 [[headers]]
   for = "/assets/*"

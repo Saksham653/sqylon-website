@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Forms</title><meta name="robots" content="noindex"></head>
+<body>
+<!-- Netlify reads this file at deploy time to register the "brief" form. The site's React form posts to it. -->
+<form name="brief" data-netlify="true" netlify-honeypot="website" hidden>
+  <input type="hidden" name="form-name" value="brief">
+  <input name="website">
+  <input name="name">
+  <input name="contact">
+  <select name="need"><option>A website that sells</option></select>
+  <select name="timeline"><option>This month</option></select>
+  <select name="budget"><option>Under ₹50,000</option></select>
+  <textarea name="about"></textarea>
+</form>
+</body>
+</html>
