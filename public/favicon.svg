@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Sqaron Technologies">
+  <defs>
+    <linearGradient id="d" x1="0.15" y1="0.1" x2="0.85" y2="0.95">
+      <stop offset="0" stop-color="#8BE9FF"/>
+      <stop offset="0.38" stop-color="#A78BFF"/>
+      <stop offset="0.72" stop-color="#FF8AD8"/>
+      <stop offset="1" stop-color="#FFD08A"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="15" fill="#07080B"/>
+  <path d="M32 54c-9.5-9.2-15-16.6-15-23.5a15 15 0 0 1 30 0c0 6.9-5.5 14.3-15 23.5z" fill="url(#d)"/>
+  <ellipse cx="26.5" cy="25.5" rx="4.5" ry="3" fill="#FFFFFF" fill-opacity="0.45" transform="rotate(-30 26.5 25.5)"/>
+</svg>
