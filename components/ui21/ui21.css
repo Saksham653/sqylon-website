@@ -5,6 +5,11 @@
 .u21-safari__screen, .u21-iphone__screen { position: absolute; z-index: 0; overflow: hidden; background: #0B0C10; }
 .u21-safari__screen { border-radius: 0 0 11px 11px; }
 .u21-safari__chrome, .u21-iphone__frame { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; pointer-events: none; transform: translateZ(0); }
+/* the phone's status bar, the page below it, and the home indicator (inverted against whatever is under it) */
+.u21-iphone__status { position: absolute; left: 0; top: 0; width: 100%; height: auto; display: block; background: #000; }
+.u21-iphone__status text { font: 600 17px/1 -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif; letter-spacing: -0.02em; fill: #FFFFFF; }
+.u21-iphone__view { position: absolute; left: 0; right: 0; bottom: 0; overflow: hidden; background: #000; }
+.u21-iphone__home { position: absolute; left: 50%; bottom: 1%; z-index: 3; width: 34.4%; height: 0.6%; min-height: 3px; translate: -50% 0; border-radius: 99px; background: #FFFFFF; mix-blend-mode: difference; opacity: 0.85; pointer-events: none; }
 
 /* sticky scroll reveal */
 .u21-sticky { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: clamp(32px, 6vw, 96px); }
