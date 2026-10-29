@@ -2,6 +2,13 @@
 
 The website of **Sqaron Technologies Pvt Ltd**, the product studio of **Shivam Jha** and **Saksham Srivastava**: websites, mobile apps, SaaS and AI agents, designed and built end to end. Planned domain: sqylon.dev (not registered yet; see Deploy).
 
+## Founders
+
+| Founder | Role | GitHub | Portfolio page |
+|---|---|---|---|
+| **Shivam Jha** | Frontend developer & product designer | [@shivamj56](https://github.com/shivamj56) | `/shivam-jha/` |
+| **Saksham Srivastava** | Backend, AI & data | [@Saksham653](https://github.com/Saksham653) | `/saksham-srivastava/` |
+
 ## Stack
 
 - **Next.js 16** (App Router, JavaScript) with `output: 'export'`: every page is prerendered to static HTML in `out/`.
