@@ -25,6 +25,15 @@ npm run build      # static site in out/
 npm run preview    # serve out/ on http://localhost:4173
 ```
 
+## Working on the site
+
+1. Branch from `main`: `git switch -c my-change`.
+2. Push the branch and open a pull request. The template asks what changed and how you checked it.
+3. The **Build** check (GitHub Actions) runs `npm ci` and `npm run build` on every pull request. Merge once it is green.
+4. `.github/CODEOWNERS` asks the right founder to review: Shivam for his portfolio, Saksham for his, both for the rest.
+
+Node version: `.nvmrc` (22, the same as Netlify). Line endings are LF, set by `.gitattributes` and `.editorconfig`.
+
 ## Where things are
 
 | Path | What |
