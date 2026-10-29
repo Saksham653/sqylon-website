@@ -458,7 +458,7 @@ html.is-browsing.has-cursor, html.is-browsing.has-cursor a, html.is-browsing.has
 @media (max-width: 860px) { .pg-grid { grid-template-columns: 1fr; } .pg-card { position: static; } }
 
 /* founders, one at a time: Shivam's wide card, then Saksham's back-end console */
-.duo__stack { display: grid; gap: clamp(20px, 3vw, 34px); }
+.duo__stack { display: grid; grid-template-columns: minmax(0, 1fr); gap: clamp(20px, 3vw, 34px); } /* minmax: no card may widen the column past the gutters (on phones it did, and widened the page) */
 .person--wide { grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr); grid-template-rows: none; }
 .person--wide .person__photo { aspect-ratio: auto; min-height: 460px; height: 100%; }
 .person--wide .person__photo::after { background: linear-gradient(90deg, transparent 52%, var(--bg-2)), linear-gradient(180deg, transparent 70%, rgba(13, 15, 20, 0.6)); }
@@ -504,6 +504,24 @@ html.is-browsing.has-cursor, html.is-browsing.has-cursor a, html.is-browsing.has
   .bk__wall { min-height: 420px; }
 }
 @media (prefers-reduced-motion: reduce) { .bk__state i { animation: none; } }
+/* 02 · the back end's intro (components/Founders.jsx): "Meet THE BACKEND EXPERT" in green particles (React Bits'
+   ParticleText) over the console, pinned with it. One canvas the size of the screen, outside the card's clip, so the
+   particles meet no edge anywhere on screen; it takes no clicks (it reads the pointer from the window) */
+.bk-intro { position: relative; }
+.bk__pin { position: relative; }
+/* the screen-sized window is as wide as the page's own viewport (--band-w, document.documentElement.clientWidth, set
+   from JS); 100vw would read a phone's widened layout viewport and keep widening it */
+.bk__band { position: absolute; left: 50%; top: 50%; z-index: 3; width: var(--band-w, 100%); height: 100vh; height: 100lvh; translate: -50% -50%; overflow: clip; pointer-events: none; }
+.bk__title { position: absolute; inset: 0; pointer-events: none; color: #6EF2A6; }
+.bk__title .particle-text { min-height: 0; }
+.bk__hint { position: absolute; left: 0; right: 0; bottom: 24px; z-index: 4; display: flex; flex-direction: column; align-items: center; gap: 10px; margin: 0; font: 500 11px/1 var(--mono); letter-spacing: 0.24em; text-transform: uppercase; color: #55695F; pointer-events: none; }
+.bk__hint i { order: 2; position: relative; width: 1px; height: 26px; overflow: hidden; background: rgba(110, 242, 166, 0.18); }
+.bk__hint i::after { content: ''; position: absolute; left: 0; top: -40%; width: 1px; height: 40%; background: #6EF2A6; animation: fe-drip 1.8s var(--ease) infinite; }
+@media (max-width: 900px) {
+  /* the console is taller than a phone screen: the words cover its first screen */
+  .bk__band { top: -12px; translate: -50% 0; }
+  .bk__hint { top: calc(min(100%, 100svh - 24px) - 84px); bottom: auto; }
+}
 .bk-out { position: fixed; inset: 0; z-index: 200; background: #040605; }
 .bk-out .tw { position: absolute; inset: 0; font-family: var(--mono); }
 
@@ -521,15 +539,27 @@ html.is-browsing.has-cursor, html.is-browsing.has-cursor a, html.is-browsing.has
 .ht__eyes video { display: block; width: 100%; height: 100%; }
 .ht[data-eyes='on'][data-eyes-live] .ht__eyes { opacity: 1; transition-delay: 0s; }
 
-/* 01 · the front end: dark, then eyes, then the whole character, then his details */
-.fe { position: relative; border-radius: 30px; overflow: hidden; background: #000; border: 1px solid var(--line); box-shadow: 0 40px 100px -50px rgba(0, 0, 0, 0.95); }
-.fe__stage { position: relative; height: clamp(560px, 50vw, 700px); }
-.fe__glow { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity 1.4s; background: radial-gradient(45% 60% at 26% 45%, rgba(167, 139, 255, 0.18), transparent 70%), radial-gradient(40% 50% at 80% 70%, rgba(255, 138, 216, 0.08), transparent 70%); }
-.fe.is-full .fe__glow, .fe.is-side .fe__glow { opacity: 1; }
-.fe__char { position: absolute; left: 0; top: 0; width: 100%; will-change: transform, opacity; mix-blend-mode: screen; }
-/* a square three widths across, centred on the eyes, dark everywhere but an oval around them (see VEIL) */
-.fe__veil { position: absolute; left: -101.56%; top: -231.48%; width: 300%; height: 533.33%; pointer-events: none; background: radial-gradient(ellipse 3.833% 1.2375% at 50% 50%, transparent 55%, #000 100%); will-change: transform, opacity; }
-.fe__hint { position: absolute; left: 0; right: 0; bottom: 34px; margin: 0; text-align: center; font: 500 11.5px/1 var(--mono); letter-spacing: 0.24em; text-transform: uppercase; color: var(--faint); pointer-events: none; }
+/* 01 · the front end, scrubbed by the scroll (components/shivam/FrontEndIntro.jsx): the stage is the card, and it
+   is what GSAP pins in the middle of the screen while the title flies past and the camera pulls back */
+.fe { position: relative; }
+/* what GSAP pins: the card, with the title layered over it and free to grow past its edges */
+.fe__pin { position: relative; }
+.fe__stage { position: relative; height: min(clamp(560px, 50vw, 700px), calc(100svh - 32px)); border-radius: 30px; overflow: hidden; background: #000; border: 1px solid var(--line); box-shadow: 0 40px 100px -50px rgba(0, 0, 0, 0.95); }
+.fe__glow { position: absolute; inset: 0; pointer-events: none; opacity: 0; background: radial-gradient(45% 60% at 26% 45%, rgba(167, 139, 255, 0.18), transparent 70%), radial-gradient(40% 50% at 80% 70%, rgba(255, 138, 216, 0.08), transparent 70%); }
+/* hidden until the timeline brings him in (and shown at rest for reduced motion) */
+.fe__char { position: absolute; left: 0; top: 0; width: 100%; opacity: 0; will-change: transform, opacity; mix-blend-mode: screen; }
+/* the title over the dark stage (React Bits' MaskedHeading): his blinking eyes play inside the letters, and it
+   flies at you about the point where his own eyes then appear (the origin is set from script) */
+.fe__band { position: absolute; left: 50%; top: 50%; z-index: 3; width: var(--band-w, 100%); height: 100vh; height: 100lvh; translate: -50% -50%; overflow: clip; pointer-events: none; }
+.fe__title { position: absolute; left: 50%; top: 50%; width: var(--fe-w, calc(min(100vw, var(--max)) - 2 * var(--gut))); height: var(--fe-h, min(clamp(560px, 50vw, 700px), calc(100svh - 32px))); translate: -50% -50%; display: grid; place-items: center; padding: 0 6%; pointer-events: auto; will-change: transform, opacity; }
+.fe__masked { color: var(--bone); }
+/* the spotlight still leads the eye, but the eyes stay readable outside it */
+.fe__masked .masked-heading__spot--shade { opacity: 0.3; }
+.fe.is-side .fe__title { pointer-events: none; }
+.fe__hint { position: absolute; left: 0; right: 0; bottom: 28px; z-index: 3; display: flex; flex-direction: column; align-items: center; gap: 10px; margin: 0; font: 500 11px/1 var(--mono); letter-spacing: 0.24em; text-transform: uppercase; color: var(--faint); pointer-events: none; }
+.fe__hint i { order: 2; position: relative; width: 1px; height: 26px; overflow: hidden; background: rgba(241, 240, 236, 0.16); }
+.fe__hint i::after { content: ''; position: absolute; left: 0; top: -40%; width: 1px; height: 40%; background: var(--bone); animation: fe-drip 1.8s var(--ease) infinite; }
+@keyframes fe-drip { to { top: 100%; } }
 .fe__info { position: absolute; right: clamp(28px, 4vw, 64px); top: 50%; translate: 0 -50%; width: min(46%, 560px); display: grid; gap: 14px; pointer-events: none; }
 .fe.is-side .fe__info { pointer-events: auto; }
 .fe__kicker { margin: 0; font: 500 12px/1.4 var(--mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint); }
@@ -547,9 +577,12 @@ html.is-browsing.has-cursor, html.is-browsing.has-cursor a, html.is-browsing.has
 .fe__links a:hover { color: var(--text); }
 .fe-out { position: fixed; inset: 0; z-index: 200; background: radial-gradient(60% 60% at 30% 40%, rgba(167, 139, 255, 0.35), transparent 70%), radial-gradient(50% 50% at 75% 70%, rgba(255, 138, 216, 0.25), transparent 70%), #0B0B10; }
 @media (max-width: 900px) {
-  .fe__stage { height: auto; display: flex; flex-direction: column; }
-  .fe__char { position: relative; width: 190%; margin-left: -45%; margin-top: -4%; }
-  .fe__hint { bottom: auto; top: 58vw; }
+  .fe__stage { height: auto; aspect-ratio: 1 / 1.08; border-radius: 26px; }
+  .fe__char { width: 190%; left: -45%; top: -4%; }
+  .fe__hint { bottom: 18px; }
+  .fe__title { padding: 0 16px; }
   .fe .ht { -webkit-mask-image: linear-gradient(180deg, #000 56%, transparent 93%); mask-image: linear-gradient(180deg, #000 56%, transparent 93%); }
-  .fe__info { position: relative; right: auto; top: auto; translate: none; width: auto; padding: 0 22px 28px; margin-top: -12%; }
+  /* on phones his details sit in their own panel under the pinned portrait */
+  .fe__more { margin-top: 12px; padding: 26px 22px 28px; border-radius: 26px; background: #000; border: 1px solid var(--line); }
+  .fe__info { position: relative; right: auto; top: auto; translate: none; width: auto; pointer-events: auto; }
 }

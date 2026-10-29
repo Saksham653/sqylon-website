@@ -106,8 +106,9 @@ export function Featured() {
 
 // a site rendered at its real width and scaled down to the frame, so the layout is the true desktop or phone one
 // `after` staggers the frames, and each one starts while the browser is idle, so loading a site never
-// lands on a frame you are scrolling through
-function LiveFrame({ src, w, h, title, after = 0 }) {
+// lands on a frame you are scrolling through. Until the site has loaded, its screenshot holds the frame
+// (sharp in the desktop window, soft in the phone, where the desktop shot is only a hint of colour).
+function LiveFrame({ src, w, h, title, after = 0, poster, soft = false }) {
   const box = useRef(null);
   const [scale, setScale] = useState(0);
   const [loaded, setLoaded] = useState(false);
@@ -129,6 +130,7 @@ function LiveFrame({ src, w, h, title, after = 0 }) {
   useEffect(() => setLoaded(false), [src]);
   return (
     <div className="pf-frame" ref={box} data-loaded={loaded ? '' : undefined}>
+      {poster && <img key={poster} className={`pf-frame__poster${soft ? ' is-soft' : ''}`} src={poster} alt="" aria-hidden="true" loading="lazy" draggable={false} />}
       {scale > 0 && go && (
         <iframe
           key={src}
@@ -168,14 +170,15 @@ export function Live() {
         {wide && (
           <motion.div className="pf-live__desk" initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ type: 'spring', visualDuration: 0.9, bounce: 0.12 }}>
             <Safari url={address(site.url)}>
-              {near && <LiveFrame src={site.url} w={1440} h={840} title={`${site.title}, live, at desktop width`} />}
+              {near && <LiveFrame src={site.url} w={1440} h={840} title={`${site.title}, live, at desktop width`} poster={site.img} />}
               <button type="button" className="pf-live__hit cursor-target" onClick={open} data-cursor-label="Open full size" aria-label={`Open ${site.title} full size`} />
             </Safari>
           </motion.div>
         )}
         <motion.div className="pf-live__phone" initial={{ opacity: 0, y: 60 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ type: 'spring', visualDuration: 1, bounce: 0.14, delay: 0.12 }}>
-          <Iphone>
-            {near && <LiveFrame src={site.url} w={390} h={844} title={`${site.title}, live, at phone width`} after={wide ? 700 : 0} />}
+          <Iphone statusBar>
+            {/* the page starts under the status bar, as in Safari on an iPhone: 844 points less the bar's 54 */}
+            {near && <LiveFrame src={site.url} w={390} h={790} title={`${site.title}, live, at phone width`} after={wide ? 700 : 0} poster={site.img} soft />}
             <button type="button" className="pf-live__hit cursor-target" onClick={open} data-cursor-label="Open full size" aria-label={`Open ${site.title} full size`} />
           </Iphone>
         </motion.div>

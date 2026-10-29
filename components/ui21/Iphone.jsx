@@ -2,20 +2,54 @@
 
 /* iPhone frame: Magic UI's mockup (magicui.design, MIT), as listed on 21st.dev.
  * Ported to plain JSX and CSS for this site: dark theme, and the screen takes any children (a live site
- * here). SVG ids are unique per instance. */
+ * here). SVG ids are unique per instance.
+ * statusBar: a real iPhone's status bar (time, signal, Wi-Fi, battery) beside the Dynamic Island, with the
+ * children below it and the home indicator over them, the way Safari lays a page out on the phone, so nothing
+ * of the page is ever hidden behind the island. */
 import { useId } from 'react';
 
 const PW = 433, PH = 882, SX = 21.25, SY = 19.25, SWD = 389.5, SHT = 843.5, R = 55.75;
+const BAR = 54; // the status bar's height in points, on a 390-point-wide screen (Dynamic Island iPhones)
 const SCREEN = {
   left: `${(SX / PW) * 100}%`, top: `${(SY / PH) * 100}%`, width: `${(SWD / PW) * 100}%`, height: `${(SHT / PH) * 100}%`,
   borderRadius: `${(R / SWD) * 100}% / ${(R / SHT) * 100}%`,
 };
 
-export default function Iphone({ children, className = '', style }) {
+function StatusBar() {
+  return (
+    <svg className="u21-iphone__status" viewBox={`0 0 390 ${BAR}`} aria-hidden="true">
+      <text x="66" y="35.5" textAnchor="middle">9:41</text>
+      <g fill="#FFFFFF">
+        <rect x="286" y="28.5" width="3.2" height="6" rx="1" />
+        <rect x="291" y="26" width="3.2" height="8.5" rx="1" />
+        <rect x="296" y="23.5" width="3.2" height="11" rx="1" />
+        <rect x="301" y="21" width="3.2" height="13.5" rx="1" />
+        <path d="M318 35.2l-3.3-3.4a4.7 4.7 0 0 1 6.6 0z" />
+      </g>
+      <g fill="none" stroke="#FFFFFF" strokeWidth="2.2" strokeLinecap="round">
+        <path d="M312.4 29.6a8 8 0 0 1 11.2 0" />
+        <path d="M309 26.2a12.8 12.8 0 0 1 18 0" />
+      </g>
+      <rect x="333.5" y="23.5" width="25" height="12" rx="3.6" fill="none" stroke="#FFFFFF" strokeOpacity="0.45" strokeWidth="1.1" />
+      <rect x="335.5" y="25.5" width="19" height="8" rx="2.2" fill="#FFFFFF" />
+      <path d="M360 27.6v4c.9-.3 1.5-1.1 1.5-2s-.6-1.7-1.5-2z" fill="#FFFFFF" fillOpacity="0.45" />
+    </svg>
+  );
+}
+
+export default function Iphone({ children, className = '', style, statusBar = false }) {
   const id = useId().replace(/[^a-zA-Z0-9]/g, '');
   return (
     <div className={`u21-iphone ${className}`.trim()} style={{ aspectRatio: `${PW} / ${PH}`, ...style }}>
-      <div className="u21-iphone__screen" style={SCREEN}>{children}</div>
+      <div className="u21-iphone__screen" style={SCREEN}>
+        {statusBar ? (
+          <>
+            <StatusBar />
+            <div className="u21-iphone__view" style={{ top: `${(BAR / SHT) * 100}%` }}>{children}</div>
+            <i className="u21-iphone__home" aria-hidden="true" />
+          </>
+        ) : children}
+      </div>
       <svg className="u21-iphone__frame" viewBox={`0 0 ${PW} ${PH}`} fill="none" aria-hidden="true">
         <defs>
           <mask id={`${id}p`} maskUnits="userSpaceOnUse">

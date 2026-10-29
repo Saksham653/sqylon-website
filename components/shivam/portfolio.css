@@ -290,6 +290,9 @@
 .pf-frame { position: absolute; inset: 0; overflow: hidden; background: #0B0B10; }
 .pf-frame iframe { position: absolute; left: 0; top: 0; border: 0; transform-origin: 0 0; pointer-events: none; opacity: 0; transition: opacity 0.6s; background: #FFFFFF; }
 .pf-frame[data-loaded] iframe { opacity: 1; }
+.pf-frame__poster { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 0; transition: opacity 0.6s; }
+.pf-frame__poster.is-soft { filter: blur(14px) saturate(1.1); scale: 1.15; opacity: 0.7; }
+.pf-frame[data-loaded] .pf-frame__poster { opacity: 0; }
 .pf-frame__load { position: absolute; inset: 0; display: grid; place-items: center; transition: opacity 0.4s; }
 .pf-frame[data-loaded] .pf-frame__load { opacity: 0; }
 .pf-frame__load i { width: 34px; height: 34px; border-radius: 50%; border: 2px solid rgba(241, 240, 236, 0.12); border-top-color: var(--pf-violet); animation: pf-spin 0.9s linear infinite; }

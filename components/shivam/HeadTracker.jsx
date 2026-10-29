@@ -252,7 +252,7 @@ export default function HeadTracker({ className = '', controllerRef, eyes = fals
       const blink = rig ? blinkAmount(now) : 0;
 
       // smile: eases in when asked, out when not
-      smile += ((smileOn ? 2 : 0) - smile) * (1 - Math.exp(-dt / 0.12));
+      smile += ((smileOn ? 2 : 0) - smile) * (1 - Math.exp(-dt / (smileOn ? 0.16 : 0.2))); // a smile takes about half a second to bloom
       if (Math.abs(smile - (smileOn ? 2 : 0)) < 0.003) smile = smileOn ? 2 : 0;
 
       if (rig) {

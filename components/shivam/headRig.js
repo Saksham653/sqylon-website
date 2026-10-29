@@ -1,7 +1,7 @@
 // Shivam's head, drawn continuously on the GPU.
 // The two keyframes of the real sweep around the wanted angle are warped toward it along measured optical
 // flow and blended (left and right); the result is shifted by a measured displacement field to tip the head
-// up or down; the closed-eye and smile patches ride the same warp. Every display frame is a fresh
+// up or down; the closed-eye and smile patches ride the same warp (the smile in several steps, so it grows). Every display frame is a fresh
 // in-between, so the head never steps from one picture to the next.
 // Data: public/assets/img/founders/shivam-3d/rig/ (built from the Flow footage and LivePortrait offline).
 
@@ -20,7 +20,8 @@ uniform sampler2DArray uKey;    // keyframes
 uniform sampler2DArray uFlow;   // per pair n: layer 2n forward (n to n+1), 2n+1 backward
 uniform sampler2DArray uPitch;  // per keyframe n: layers 4n + (0: -12, 1: -6, 2: +6, 3: +12)
 uniform sampler2DArray uBlinkT; // per keyframe: the eyes closed
-uniform sampler2DArray uSmileT; // per keyframe: layers 2n (a smile), 2n+1 (a bigger one)
+uniform sampler2DArray uSmileT; // per keyframe n: layers n*L .. n*L+L-1, the smile growing step by step
+uniform int uSmileLevels;       // L
 uniform vec4 uBlinkRect[32];
 uniform vec4 uSmileRect[32];
 uniform int uN;
@@ -60,8 +61,14 @@ vec4 keyAt(int n, vec2 uv) {
   vec4 c = texture(uKey, vec3(uv, float(n)));
   c = overlay(c, uBlinkT, uBlinkRect[n], float(n), uv, uBlink);
   if (uSmile > 0.0) {
-    c = overlay(c, uSmileT, uSmileRect[n], float(2 * n), uv, min(uSmile, 1.0));
-    c = overlay(c, uSmileT, uSmileRect[n], float(2 * n + 1), uv, clamp(uSmile - 1.0, 0.0, 1.0));
+    // the smile runs 0..2; walked through the rig's steps in order, so it grows instead of cross-fading
+    float s = uSmile * float(uSmileLevels) * 0.5;
+    for (int l = 0; l < 8; l++) {
+      if (l >= uSmileLevels) break;
+      float a = clamp(s - float(l), 0.0, 1.0);
+      if (a <= 0.0) break;
+      c = overlay(c, uSmileT, uSmileRect[n], float(n * uSmileLevels + l), uv, a);
+    }
   }
   return c;
 }
@@ -187,6 +194,7 @@ export async function createRig(canvas, { base, scale = 1, signal }) {
   const rects = (list) => new Float32Array(32 * 4).map((_, k) => (list[Math.floor(k / 4)] ? list[Math.floor(k / 4)][k % 4] : 0));
   gl.uniform4fv(U('uBlinkRect[0]'), rects(meta.blink.rects));
   gl.uniform4fv(U('uSmileRect[0]'), rects(meta.smile.rects));
+  gl.uniform1i(U('uSmileLevels'), meta.smile.levels);
   gl.uniform2f(U('uSize'), W, H);
   gl.uniform1f(U('uFlowQ'), meta.flows.q);
   gl.uniform1f(U('uPitchQ'), meta.pitch.q);
